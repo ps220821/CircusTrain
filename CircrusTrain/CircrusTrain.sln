@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircrusTrain", "CircrusTrain\CircrusTrain.csproj", "{28904336-0D68-4894-AB26-2FE52DD417B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{963939F0-F3B5-491E-8874-3619EC61B762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{28904336-0D68-4894-AB26-2FE52DD417B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28904336-0D68-4894-AB26-2FE52DD417B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28904336-0D68-4894-AB26-2FE52DD417B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{963939F0-F3B5-491E-8874-3619EC61B762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{963939F0-F3B5-491E-8874-3619EC61B762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{963939F0-F3B5-491E-8874-3619EC61B762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{963939F0-F3B5-491E-8874-3619EC61B762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
