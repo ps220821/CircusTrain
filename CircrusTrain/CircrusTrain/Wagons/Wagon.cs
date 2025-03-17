@@ -18,20 +18,29 @@ namespace CircrusTrain.Wagons
 
         public virtual bool CanAddAnimal(Animal animal)
         {
-            if (animal.Diet == Animal.AnimalDiet.Carnivore &&
-                _animals.Any(a => (int)a.Size <= (int)animal.Size))
+            if (CurrentPoints + (int)animal.Size > MaxPoints)
+                return false;
+
+            if (animal.Diet == Animal.AnimalDiet.Carnivore)
+            {
+                if (Animals.Any(a => (int)a.Size <= (int)animal.Size))
+                {
+                    return false;
+                }
+            }
+
+            if (CurrentPoints + (int)animal.Size > MaxPoints)
             {
                 return false;
             }
 
-            return CurrentPoints + (int)animal.Size <= MaxPoints;
+            return true;
         }
 
         public void AddAnimal(Animal animal)
         {
             if (!CanAddAnimal(animal))
                 throw new InvalidOperationException("Cannot add animal to wagon.");
-
             _animals.Add(animal);
             CurrentPoints += (int)animal.Size;
         }

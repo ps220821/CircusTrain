@@ -3,6 +3,7 @@ using CircrusTrain.Models;
 using CircrusTrain.Wagons;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,69 +13,68 @@ namespace CircrusTrain.Train
     public class Train : ITrain
     {
         private readonly List<Wagon> _wagons = new();
-        private readonly List<Animal> _animals;
+        private  List<Animal> _animals;
         private readonly IWagonPrinter _printer;
         private const int MaxSeparatorWagons = 4;
         private int _separatorWagonCount = 0;
 
-        public IReadOnlyList<Wagon> Wagons => _wagons.AsReadOnly();
+        public ReadOnlyCollection<Wagon> Wagons => _wagons.AsReadOnly();
 
         public Train(List<Animal> animals, IWagonPrinter printer)
         {
             _animals = new List<Animal>(animals);
-            _printer = printer;
+            _printer = printer ?? throw new ArgumentNullException(nameof(printer));
         }
 
-        public void DistributeAnimals()
+        public void fillWagons()
         {
             SortAnimals();
             foreach (var animal in _animals)
             {
-                if (!TryAddToExistingWagon(animal))
+                bool added = false;
+                foreach (var wagon in _wagons)
                 {
-                    AddToNewWagon(animal);
+                    if (wagon.CanAddAnimal(animal))
+                    {
+                        wagon.AddAnimal(animal);
+                        added = true;
+                        break;
+                    }
+                }
+
+                if (!added)
+                {
+                    if (animal.Size != Animal.AnimalSize.Large)
+                    {
+                        if (_separatorWagonCount != MaxSeparatorWagons)
+                        {
+                            SeparatorWagon separatorWagon = new SeparatorWagon();
+                            separatorWagon.AddAnimal(animal);
+                            _wagons.Add(separatorWagon);
+                        }
+                    }
+                    else
+                    {
+                        Wagon newWagon = new Wagon();
+                        newWagon.AddAnimal(animal);
+                        _wagons.Add(newWagon);
+                    }
                 }
             }
-            _printer.PrintTrain(Wagons);
+            PrintTrain();
         }
 
         private void SortAnimals()
         {
-            _animals.Sort((a, b) =>
-            {
-                int dietCompare = b.Diet.CompareTo(a.Diet); // Carnivores first
-                return dietCompare != 0 ? dietCompare : b.Size.CompareTo(a.Size); // Larger first
-            });
+            _animals = _animals
+            .OrderByDescending(a => a.Diet == Animal.AnimalDiet.Herbivore)  // Carnivoren eerst (False < True)
+            .ThenByDescending(a => a.Size)  // Grootste dieren eerst
+            .ToList();
         }
 
-        private bool TryAddToExistingWagon(Animal animal)
+        public void PrintTrain()
         {
-            foreach (var wagon in _wagons)
-            {
-                if (wagon.CanAddAnimal(animal))
-                {
-                    wagon.AddAnimal(animal);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void AddToNewWagon(Animal animal)
-        {
-            if (animal.Size != Animal.AnimalSize.Large && _separatorWagonCount < MaxSeparatorWagons)
-            {
-                var separatorWagon = new SeparatorWagon();
-                separatorWagon.AddAnimal(animal);
-                _wagons.Add(separatorWagon);
-                _separatorWagonCount++;
-            }
-            else
-            {
-                var wagon = new Wagon();
-                wagon.AddAnimal(animal);
-                _wagons.Add(wagon);
-            }
+            _printer.PrintTrain(Wagons);
         }
     }
 }

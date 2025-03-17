@@ -37,4 +37,4 @@ var animals = new List<Animal>
 
 var printer = new WagonPrinter();
 var train = new Train(animals, printer);
-train.DistributeAnimals();
+train.fillWagons();
