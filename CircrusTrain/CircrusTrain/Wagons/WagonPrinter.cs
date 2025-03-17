@@ -11,8 +11,15 @@ namespace CircrusTrain.Wagons
     {
         public void PrintWagon(IWagon wagon)
         {
-            string wagonType = wagon is SeparatorWagon ? "Separator Wagon" : "Wagon";
-            Console.WriteLine($"{wagonType} with {wagon.Animals.Count} animals (Points: {wagon.CurrentPoints}/10)");
+            bool isSeparatorWagon = wagon is SeparatorWagon;
+            string wagonType = isSeparatorWagon ? "Separator Wagon" : "Wagon";
+
+            // Only show points for regular wagons, not separator wagons
+            string capacityInfo = isSeparatorWagon
+                ? $"with {wagon.Animals.Count}/2 animals"
+                : $"with {wagon.Animals.Count} animals (Points: {wagon.CurrentPoints}/10)";
+
+            Console.WriteLine($"{wagonType} {capacityInfo}");
             foreach (var animal in wagon.Animals)
             {
                 Console.WriteLine($" - {animal.Name} ({animal.Size}, {animal.Diet})");
