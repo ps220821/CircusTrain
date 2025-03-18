@@ -12,25 +12,25 @@ while (true)
     Console.WriteLine("3. Fill wagons and show");
     Console.WriteLine("4. Stop");
 
-    string keuze = Console.ReadLine().Trim();
-    if (keuze == "1")
+    string choice = Console.ReadLine().Trim();
+    if (choice == "1")
     {
         animals.AddRange(GetUserAnimals());
     }
-    else if (keuze == "2")
+    else if (choice == "2")
     {
         animals = GetDefaultAnimals();
         var printer = new WagonPrinter();
         var train = new Train(animals, printer);
         train.fillWagons();
     }
-    else if (keuze == "3")
+    else if (choice == "3")
     {
         var printer = new WagonPrinter();
         var train = new Train(animals, printer);
         train.fillWagons();
     }
-    else if (keuze == "4")
+    else if (choice == "4")
     {
         break;
     }

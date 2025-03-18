@@ -32,6 +32,7 @@ namespace CircrusTrain.Train
             foreach (var animal in _animals)
             {
                 bool added = false;
+                // Finds suitable wagon for animal
                 foreach (var wagon in _wagons)
                 {
                     if (wagon.CanAddAnimal(animal))
@@ -44,7 +45,7 @@ namespace CircrusTrain.Train
 
                 if (!added)
                 {
-                    if (animal.Size != Animal.AnimalSize.Large)
+                    if (animal.Size != Animal.AnimalSize.Large) // create seprator wagon and add animal
                     {
                         if (_separatorWagonCount != MaxSeparatorWagons)
                         {
@@ -53,7 +54,7 @@ namespace CircrusTrain.Train
                             _wagons.Add(separatorWagon);
                         }
                     }
-                    else
+                    else // create regualr wagon and add animal
                     {
                         Wagon newWagon = new Wagon();
                         newWagon.AddAnimal(animal);
@@ -64,11 +65,11 @@ namespace CircrusTrain.Train
             PrintTrain();
         }
 
-        private void SortAnimals()
-        {
+        private void SortAnimals() // sort animals  
+        { 
             _animals = _animals
-            .OrderByDescending(a => a.Diet == Animal.AnimalDiet.Herbivore)  // Carnivoren eerst (False < True)
-            .ThenByDescending(a => a.Size)  // Grootste dieren eerst
+            .OrderByDescending(a => a.Diet == Animal.AnimalDiet.Herbivore)
+            .ThenByDescending(a => a.Size)  
             .ToList();
         }
 
